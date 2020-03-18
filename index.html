@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-size: 16px;
+        }
+
+        #wallClock {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: 8px solid #f5f5f5;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #currentTime {
+            position: absolute;
+            left: 50%;
+            top: 80px;
+            transform: translateX(-50%);
+            background: #232323;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 2px;
+            box-shadow: inset 0px 0px 5px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        #wallClock:before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 10px solid #f1f1f1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0px 0px 10px -2px rgba(0, 0, 0, 0.6);
+        }
+
+        #wallClock:after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #333;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #wallClock span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        #wallClock span:nth-of-type(12) {
+            top: 5%;
+        }
+
+        #wallClock span:nth-of-type(1) {
+            top: 12%;
+            left: 72%;
+        }
+
+        #wallClock span:nth-of-type(2) {
+            top: 28%;
+            left: 88%;
+        }
+
+        #wallClock span:nth-of-type(3) {
+            top: 50%;
+            left: 95%;
+        }
+
+        #wallClock span:nth-of-type(4) {
+            top: 72%;
+            left: 88%;
+        }
+
+        #wallClock span:nth-of-type(5) {
+            top: 88%;
+            left: 72%;
+        }
+
+        #wallClock span:nth-of-type(6) {
+            top: 95%;
+            left: 50%;
+        }
+
+        #wallClock span:nth-of-type(7) {
+            top: 88%;
+            left: 28%;
+        }
+
+        #wallClock span:nth-of-type(8) {
+            top: 72%;
+            left: 12%;
+        }
+
+        #wallClock span:nth-of-type(9) {
+            top: 50%;
+            left: 5%;
+        }
+
+        #wallClock span:nth-of-type(10) {
+            top: 28%;
+            left: 12%;
+        }
+
+        #wallClock span:nth-of-type(11) {
+            top: 12%;
+            left: 28%;
+        }
+
+        #hour_hand {
+            width: 3px;
+            height: 60px;
+            background: #666;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        }
+
+        #minute_hand {
+            width: 2px;
+            height: 80px;
+            background: #888;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        }
+
+        #second_hand {
+            width: 1px;
+            height: 100px;
+            background: #aaa;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wallClock">
+        <div id="currentTime"></div>
+        <div id="hour_hand"></div>
+        <div id="minute_hand"></div>
+        <div id="second_hand"></div>
+    </div>
+    <script>
+        let mood, clockNumber, digH, digM, digS, hour_hand, minute_hand, second_hand;
+        let currentTime = document.getElementById('currentTime');
+        let wallClock = document.getElementById('wallClock');
+        for (let i = 1; i < 13; i++) {
+            clockNumber = document.createElement('span');
+            clockNumber.innerHTML = i;
+            wallClock.appendChild(clockNumber)
+        }
+        function clock() {
+            let time = new Date();
+            let date = new Date();
+            let hour = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            hour_hand = document.getElementById('hour_hand');
+            minute_hand = document.getElementById('minute_hand');
+            second_hand = document.getElementById('second_hand');
+            if (hour > 12) {
+                mood = 'PM';
+                digH = `0${hour - 12}`;
+            } else {
+                mood = 'AM';
+                digH = hour;
+            }
+            (minutes < 10) ? digM = `0${minutes}` : digM = minutes;
+            (seconds < 10) ? digS = `0${seconds}` : digS = seconds;
+
+            currentTime.innerHTML = `${digH} : ${digM} : ${digS} ${mood}`;
+
+            let hourDeg = time.getHours() * (360 / 12) + (time.getMinutes() * 30 / 60)
+            let minuteDeg = time.getMinutes() * (360 / 60) + (time.getSeconds() * 6 / 60)
+            let secondDeg = time.getSeconds() * (360 / 60);
+            hour_hand.style.transform = `rotate(${hourDeg}deg)`;
+            minute_hand.style.transform = `rotate(${minuteDeg}deg)`;
+            second_hand.style.transform = `rotate(${secondDeg}deg)`;
+        }
+        setInterval(clock, 1000);
+    </script>
+</body>
+
+</html>
